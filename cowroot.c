@@ -25,6 +25,7 @@
 #include <pthread.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/stat.h>
 
 void *map;
 int f;
@@ -83,7 +84,7 @@ void *procselfmemThread(void *arg)
     int f=open("/proc/self/mem",O_RDWR);
     int i,c=0;
     for(i=0;i<1000000 && !stop;i++) {
-        lseek(f,map,SEEK_SET);
+        lseek(f,(long long)map,SEEK_SET);
         c+=write(f, str, sc_len);
     }
     printf("thread stopped\n");
